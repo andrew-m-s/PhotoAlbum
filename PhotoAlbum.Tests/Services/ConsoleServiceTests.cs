@@ -5,6 +5,7 @@ using Moq;
 using PhotoAlbum.Models;
 using PhotoAlbum.Services;
 using PhotoAlbum.Wrappers;
+using PhotoAlbumTests.Helpers;
 
 namespace PhotoAlbum.Tests;
 
@@ -21,34 +22,12 @@ public class ConsoleServiceTests
     {
         _mockConsoleWrapper = new Mock<IConsoleWrapper>();
 
-        _expectedPhotos = new List<Photos>(){
-            new() {
-                AlbumId = 1,
-                Id = 1,
-                Title = "Photo 1",
-                URL = "https://via.placeholder.com/600/1",
-                ThumbnailURL = "https://via.placeholder.com/150/1"
-            },
-
-            new() {
-                AlbumId = 1,
-                Id = 2,
-                Title = "Photo 2",
-                URL = "https://via.placeholder.com/600/2",
-                ThumbnailURL = "https://via.placeholder.com/150/2"
-            },
-
-            new() {
-                AlbumId = 2,
-                Id = 3,
-                Title = "Photo 3",
-                URL = "https://via.placeholder.com/600/3",
-                ThumbnailURL = "https://via.placeholder.com/150/3"
-            }
-        };
-
+        _expectedPhotos = PhotoHelpers.GetTestPhotoList();
+        
         _mockPhotoAlbumService = new Mock<IPhotoAlbumService>();
-        _mockPhotoAlbumService.Setup(x => x.GetPhotos(1)).Returns(Task.FromResult(_expectedPhotos));
+        _mockPhotoAlbumService
+            .Setup(x => x.GetPhotos(It.IsAny<int>()))
+            .Returns(Task.FromResult(_expectedPhotos));
 
         _consoleService = new ConsoleService(_mockConsoleWrapper.Object, _mockPhotoAlbumService.Object);
 
@@ -59,7 +38,7 @@ public class ConsoleServiceTests
     {
         _consoleService.StartApplication();
 
-        _mockPhotoAlbumService.Verify(x => x.GetPhotos(1), Times.Once);
+        _mockPhotoAlbumService.Verify(x => x.GetPhotos(It.IsAny<int>()), Times.Once);
     }
 
     [TestMethod]
