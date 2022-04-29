@@ -5,7 +5,7 @@ using Moq;
 using PhotoAlbum.Models;
 using PhotoAlbum.Services;
 using PhotoAlbum.Wrappers;
-using PhotoAlbumTests.Helpers;
+using PhotoAlbum.Tests.Helpers;
 
 namespace PhotoAlbum.Tests;
 
@@ -23,7 +23,7 @@ public class ConsoleServiceTests
         _mockConsoleWrapper = new Mock<IConsoleWrapper>();
 
         _expectedPhotos = PhotoHelpers.GetTestPhotoList();
-        
+
         _mockPhotoAlbumService = new Mock<IPhotoAlbumService>();
         _mockPhotoAlbumService
             .Setup(x => x.GetPhotos(It.IsAny<int>()))

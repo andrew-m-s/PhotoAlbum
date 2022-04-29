@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using PhotoAlbum.Models;
 using PhotoAlbum.Wrappers;
-using PhotoAlbumTests.Helpers;
+using PhotoAlbum.Tests.Helpers;
 
 namespace PhotoAlbum.Tests;
 
@@ -38,7 +38,7 @@ public class PhotoAlbumServiceTests
     [TestMethod]
     public void ShouldReturnValueFromApiClient()
     {
-        var actualPhotos =_photoAlbumService.GetPhotos(1);
+        var actualPhotos =_photoAlbumService.GetPhotos(1).Result;
 
         Assert.AreEqual(_expectedPhotos, actualPhotos);
     }
