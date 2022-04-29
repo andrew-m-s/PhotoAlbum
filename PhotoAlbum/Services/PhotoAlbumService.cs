@@ -3,7 +3,7 @@ using PhotoAlbum.Wrappers;
 
 public interface IPhotoAlbumService
 {
-    List<Photos> GetPhotos(int albumId);
+    Task<List<Photos>> GetPhotos(int albumId);
 }
 
 public class PhotoAlbumService : IPhotoAlbumService
@@ -15,8 +15,8 @@ public class PhotoAlbumService : IPhotoAlbumService
         _apiClient = apiClient;
     }
 
-    public List<Photos> GetPhotos(int albumId)
+    public async Task<List<Photos>> GetPhotos(int albumId)
     {
-        throw new NotImplementedException();
+        return await _apiClient.GetAsync<List<Photos>>("https://jsonplaceholder.typicode.com/photos");
     }
 }

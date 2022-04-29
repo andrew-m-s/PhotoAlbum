@@ -2,7 +2,7 @@ using PhotoAlbum.Wrappers;
 
 namespace PhotoAlbum.Services;
 
-public interface IConsoleService 
+public interface IConsoleService
 {
     void StartApplication();
 }
@@ -10,13 +10,21 @@ public interface IConsoleService
 public class ConsoleService : IConsoleService
 {
     private IConsoleWrapper _consoleWrapper;
+    private IPhotoAlbumService _photoAlbumService;
 
-    public ConsoleService(IConsoleWrapper consoleWrapper) 
+    public ConsoleService(IConsoleWrapper consoleWrapper, IPhotoAlbumService photoAlbumService)
     {
         _consoleWrapper = consoleWrapper;
+        _photoAlbumService = photoAlbumService;
     }
 
-    public void StartApplication() {
-        _consoleWrapper.WriteLine("Hello, World!");
+    public void StartApplication()
+    {
+        var photoResults = _photoAlbumService.GetPhotos(1).Result;
+
+        photoResults.ForEach(x =>
+        {
+            _consoleWrapper.WriteLine($"[{x.Id}] {x.Title}");
+        });
     }
 }
