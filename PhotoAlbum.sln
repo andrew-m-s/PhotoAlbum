@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoAlbum", "PhotoAlbum\PhotoAlbum.csproj", "{CE6ECC64-13B2-4462-96BC-E13B0BA680BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoAlbum.Tests", "PhotoAlbum.Tests\PhotoAlbum.Tests.csproj", "{0A10913D-C0CC-442F-995B-9E7819D700AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE6ECC64-13B2-4462-96BC-E13B0BA680BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE6ECC64-13B2-4462-96BC-E13B0BA680BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE6ECC64-13B2-4462-96BC-E13B0BA680BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE6ECC64-13B2-4462-96BC-E13B0BA680BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A10913D-C0CC-442F-995B-9E7819D700AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A10913D-C0CC-442F-995B-9E7819D700AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A10913D-C0CC-442F-995B-9E7819D700AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A10913D-C0CC-442F-995B-9E7819D700AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
