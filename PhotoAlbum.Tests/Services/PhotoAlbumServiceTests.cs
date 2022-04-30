@@ -30,7 +30,7 @@ public class PhotoAlbumServiceTests
     [TestMethod]
     public void ShouldCallApiClientWithCorrectUri()
     {
-        var expectedUri = "https://jsonplaceholder.typicode.com/photos";
+        var expectedUri = "https://jsonplaceholder.typicode.com/photos?albumId=1";
         _photoAlbumService.GetPhotos(1);
         _mockApiClient.Verify(x => x.GetAsync<List<Photos>>(expectedUri), Times.Once);
     }

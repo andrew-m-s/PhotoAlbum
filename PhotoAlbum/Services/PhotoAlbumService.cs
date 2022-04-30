@@ -17,6 +17,8 @@ public class PhotoAlbumService : IPhotoAlbumService
 
     public async Task<List<Photos>> GetPhotos(int albumId)
     {
-        return await _apiClient.GetAsync<List<Photos>>("https://jsonplaceholder.typicode.com/photos");
+        var uri = $"https://jsonplaceholder.typicode.com/photos?albumId={albumId}";
+        
+        return await _apiClient.GetAsync<List<Photos>>(uri);
     }
 }
