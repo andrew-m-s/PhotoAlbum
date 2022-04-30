@@ -85,6 +85,7 @@ public class ConsoleServiceTests
 
         _consoleService.StartApplication();
 
+        _mockConsoleWrapper.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Never());
         _mockPhotoAlbumService.Verify(x => x.GetPhotos(It.IsAny<int>()), Times.Never);
     }
 
