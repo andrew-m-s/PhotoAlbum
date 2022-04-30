@@ -76,6 +76,16 @@ public class ConsoleServiceTests
 
         _mockConsoleWrapper.Verify(x => x.WriteLine("That Album ID was not valid, please try again!"));
         _mockPhotoAlbumService.Verify(x => x.GetPhotos(It.IsAny<int>()), Times.Never);
+    }  
+
+    [TestMethod]
+    public void ShouldAllowUserToExitWithQInputWithoutQueryingAlbums()
+    {
+        SetupTestUserInput("Q");
+
+        _consoleService.StartApplication();
+
+        _mockPhotoAlbumService.Verify(x => x.GetPhotos(It.IsAny<int>()), Times.Never);
     }
 
     [TestMethod]

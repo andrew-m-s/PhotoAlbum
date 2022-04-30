@@ -40,6 +40,8 @@ public class ConsoleService : IConsoleService
         if (Int32.TryParse(userInput, out albumIdInput))
         {
             DisplayPhotosByAlbumId(albumIdInput);
+        } else {
+            _consoleWrapper.WriteLine("That Album ID was not valid, please try again!");
         }
     }
 }
