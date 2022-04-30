@@ -20,6 +20,10 @@ public class ConsoleService : IConsoleService
 
     public void StartApplication()
     {
+        _consoleWrapper.Write("Please enter an albumId: ");
+
+        var userInput = _consoleWrapper.ReadLine();
+
         var photoResults = _photoAlbumService.GetPhotos(1).Result;
 
         photoResults.ForEach(x =>
