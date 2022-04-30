@@ -24,7 +24,7 @@ public class ConsoleServiceTests
 
         _mockConsoleWrapper = new Mock<IConsoleWrapper>();
         _mockConsoleWrapper.Setup(x => x.ReadLine())
-            .Returns("1");
+            .Returns("q");
 
         _mockPhotoAlbumService = new Mock<IPhotoAlbumService>();
         _mockPhotoAlbumService
@@ -35,10 +35,11 @@ public class ConsoleServiceTests
 
     }
 
-    public void SetupTestUserInput(string expectedUserInput) 
+    public void SetupSingleTestUserInput(string expectedUserInput) 
     {
-        _mockConsoleWrapper.Setup(x => x.ReadLine())
-            .Returns(expectedUserInput);
+        _mockConsoleWrapper.SetupSequence(x => x.ReadLine())
+            .Returns(expectedUserInput)
+            .Returns("q");
     }
 
     [TestMethod]
@@ -46,7 +47,7 @@ public class ConsoleServiceTests
     {
         _consoleService.StartApplication();
 
-        _mockConsoleWrapper.Verify(x => x.Write("Please enter an albumId: "));
+        _mockConsoleWrapper.Verify(x => x.Write("Please enter an albumId, or q to exit: "));
     }
 
     [TestMethod]
@@ -60,7 +61,7 @@ public class ConsoleServiceTests
     [TestMethod]
     public void ShouldCallGetPhotosWithUserInput()
     {
-        SetupTestUserInput("2");
+        SetupSingleTestUserInput("2");
 
         _consoleService.StartApplication();
 
@@ -70,7 +71,7 @@ public class ConsoleServiceTests
     [TestMethod]
     public void ShouldDisplayErrorToUserIfInputIsNotIntegerAndNotQueryPhotos()
     {
-        SetupTestUserInput("NotAnInt");
+        SetupSingleTestUserInput("NotAnInt");
 
         _consoleService.StartApplication();
 
@@ -79,9 +80,20 @@ public class ConsoleServiceTests
     }  
 
     [TestMethod]
-    public void ShouldAllowUserToExitWithQInputWithoutQueryingAlbums()
+    public void ShouldAllowUserToExitWithUpperCaseQInputWithoutQueryingAlbums()
     {
-        SetupTestUserInput("Q");
+        SetupSingleTestUserInput("Q");
+
+        _consoleService.StartApplication();
+
+        _mockConsoleWrapper.Verify(x => x.WriteLine(It.IsAny<string>()), Times.Never());
+        _mockPhotoAlbumService.Verify(x => x.GetPhotos(It.IsAny<int>()), Times.Never);
+    }
+
+    [TestMethod]
+    public void ShouldAllowUserToExitWithLowerCaseQInputWithoutQueryingAlbums()
+    {
+        SetupSingleTestUserInput("q");
 
         _consoleService.StartApplication();
 
@@ -92,7 +104,7 @@ public class ConsoleServiceTests
     [TestMethod]
     public void ShouldDisplayQueriedAlbumIdToUser()
     {
-        SetupTestUserInput("2");
+        SetupSingleTestUserInput("2");
 
         _consoleService.StartApplication();
 
@@ -102,11 +114,30 @@ public class ConsoleServiceTests
     [TestMethod]
     public void ShouldDisplayPhotoIdsAndTitlesForQueriedAlbum()
     {
+        SetupSingleTestUserInput("1");
+
         _consoleService.StartApplication();
 
         expectedPhotos.ForEach(photo =>
         {
             _mockConsoleWrapper.Verify(x => x.WriteLine($"[{photo.Id}] {photo.Title}"), Times.Once);
         });
+    }
+
+    [TestMethod]
+    public void ShouldAllowUserToQueryAlbumsMultipleTimesBeforeExiting()
+    {
+        _mockConsoleWrapper.SetupSequence(x => x.ReadLine())
+            .Returns("1")
+            .Returns("2")
+            .Returns("3")
+            .Returns("q");
+
+        _consoleService.StartApplication();
+
+        _mockPhotoAlbumService.Verify(x => x.GetPhotos(1), Times.Once);
+        _mockPhotoAlbumService.Verify(x => x.GetPhotos(2), Times.Once);
+        _mockPhotoAlbumService.Verify(x => x.GetPhotos(3), Times.Once);
+        
     }
 }

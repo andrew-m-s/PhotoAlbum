@@ -18,7 +18,7 @@ public class ConsoleService : IConsoleService
         _photoAlbumService = photoAlbumService;
     }
 
-    public void DisplayPhotosByAlbumId(int albumId) {
+    private void DisplayPhotosByAlbumId(int albumId) {
         var photoResults = _photoAlbumService.GetPhotos(albumId).Result;
 
         _consoleWrapper.WriteLine($"photo-album {albumId}");
@@ -31,17 +31,24 @@ public class ConsoleService : IConsoleService
 
     public void StartApplication()
     {
-        _consoleWrapper.Write("Please enter an albumId: ");
+        while(true) {
+            _consoleWrapper.Write("Please enter an albumId, or q to exit: ");
 
-        var userInput = _consoleWrapper.ReadLine();
+            var userInput = _consoleWrapper.ReadLine();
 
-        int albumIdInput;
+            if(userInput.ToLower() == "q")
+            {
+                return;
+            }
 
-        if (Int32.TryParse(userInput, out albumIdInput))
-        {
-            DisplayPhotosByAlbumId(albumIdInput);
-        } else {
-            _consoleWrapper.WriteLine("That Album ID was not valid, please try again!");
+            int albumIdInput;
+
+            if (Int32.TryParse(userInput, out albumIdInput))
+            {
+                DisplayPhotosByAlbumId(albumIdInput);
+            } else {
+                _consoleWrapper.WriteLine("That Album ID was not valid, please try again!");
+            }
         }
     }
 }
