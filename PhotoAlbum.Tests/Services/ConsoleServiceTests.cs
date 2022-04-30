@@ -35,6 +35,12 @@ public class ConsoleServiceTests
 
     }
 
+    public void SetupTestUserInput(string expectedUserInput) 
+    {
+        _mockConsoleWrapper.Setup(x => x.ReadLine())
+            .Returns(expectedUserInput);
+    }
+
     [TestMethod]
     public void ShouldDisplayUserPromptOnStartup()
     {
@@ -54,17 +60,36 @@ public class ConsoleServiceTests
     [TestMethod]
     public void ShouldCallGetPhotosWithUserInput()
     {
-        var expectedUserInput = "2";
+        SetupTestUserInput("2");
+
         _consoleService.StartApplication();
-        
-        _mockConsoleWrapper.Setup(x => x.ReadLine())
-            .Returns(expectedUserInput);
 
         _mockPhotoAlbumService.Verify(x => x.GetPhotos(2), Times.Once);
     }
 
     [TestMethod]
-    public void ShouldReturnAllPhotos()
+    public void ShouldDisplayErrorToUserIfInputIsNotIntegerAndNotQueryPhotos()
+    {
+        SetupTestUserInput("NotAnInt");
+
+        _consoleService.StartApplication();
+
+        _mockConsoleWrapper.Verify(x => x.WriteLine("That Album ID was not valid, please try again!"));
+        _mockPhotoAlbumService.Verify(x => x.GetPhotos(It.IsAny<int>()), Times.Never);
+    }
+
+    [TestMethod]
+    public void ShouldDisplayQueriedAlbumIdToUser()
+    {
+        SetupTestUserInput("2");
+
+        _consoleService.StartApplication();
+
+        _mockConsoleWrapper.Verify(x => x.WriteLine("photo-album 2"));
+    }
+
+    [TestMethod]
+    public void ShouldDisplayPhotoIdsAndTitlesForQueriedAlbum()
     {
         _consoleService.StartApplication();
 

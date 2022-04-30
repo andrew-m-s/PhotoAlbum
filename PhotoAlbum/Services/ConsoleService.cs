@@ -18,17 +18,28 @@ public class ConsoleService : IConsoleService
         _photoAlbumService = photoAlbumService;
     }
 
+    public void DisplayPhotosByAlbumId(int albumId) {
+        var photoResults = _photoAlbumService.GetPhotos(albumId).Result;
+
+        _consoleWrapper.WriteLine($"photo-album {albumId}");
+
+        photoResults.ForEach(x =>
+        {
+            _consoleWrapper.WriteLine($"[{x.Id}] {x.Title}");
+        });
+    }
+
     public void StartApplication()
     {
         _consoleWrapper.Write("Please enter an albumId: ");
 
         var userInput = _consoleWrapper.ReadLine();
 
-        var photoResults = _photoAlbumService.GetPhotos(1).Result;
+        int albumIdInput;
 
-        photoResults.ForEach(x =>
+        if (Int32.TryParse(userInput, out albumIdInput))
         {
-            _consoleWrapper.WriteLine($"[{x.Id}] {x.Title}");
-        });
+            DisplayPhotosByAlbumId(albumIdInput);
+        }
     }
 }
