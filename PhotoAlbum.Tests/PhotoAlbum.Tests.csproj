@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+    <NoWarn>8618</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
